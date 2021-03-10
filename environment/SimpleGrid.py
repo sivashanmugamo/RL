@@ -168,12 +168,15 @@ class SimpleGrid(gym.Env):
             info: dict
         '''
 
+        # Initializes the states
         self.state= np.zeros((self.grid_y, self.grid_x))
         temp_pos= self.agent_pos.copy()
 
+        # Sets the uncertainity factor of the environment
         if self.stochasticity:
             action= action if random.uniform(0, 1) < 0.75 else random.choice([i for i in range(self.action_space.n)])
 
+        # Moves the agent in the environment by 1 step
         if action == 0: # Down
             self.agent_pos[0] += 1
         if action == 1: # Up
@@ -183,6 +186,7 @@ class SimpleGrid(gym.Env):
         if action == 3: # Left
             self.agent_pos[1] -= 1
 
+        # Keeps the agent within the confines of the environment
         if (self.agent_pos[0] < 0) or (self.agent_pos[1] > self.grid_y):
             self.agent_pos[0]= temp_pos[0]
         if (self.agent_pos[1] < 0) or (self.agent_pos[1] > self.grid_x):
@@ -190,6 +194,7 @@ class SimpleGrid(gym.Env):
 
         self.state[tuple(self.agent_pos)]= self.agent_value
 
+        # Sets the reward for the states
         if len(self.reward_set) > 0:
             for reward_pos, reward_val in self.reward_set.items():
                 self.state[reward_pos]= reward_val
@@ -197,6 +202,7 @@ class SimpleGrid(gym.Env):
         self.goal_pos= self.init_goal_pos
         self.state[tuple(self.goal_pos)]= self.goal_value
 
+        # Calculates the reward for the state & its corresponding action
         reward= 0
         if len(self.reward_set) > 0:
             for reward_pos, reward_val in self.reward_set.items():
@@ -206,6 +212,7 @@ class SimpleGrid(gym.Env):
         if (self.agent_pos == self.goal_pos):
             reward+= self.goal_value
 
+        # Time step increment
         self.timestep += 1
 
         done= True if ((self.timestep >= self.max_timesteps) or (self.agent_pos == self.goal_pos)) else False
@@ -221,11 +228,14 @@ class SimpleGrid(gym.Env):
         plt.imsave('./environment_render.png', self.state)
 
     @property
+    # Getter method for init_agent_pos
     def init_agent_pos(self):
         return self._init_agent_pos
 
     @init_agent_pos.setter
+    # Setter method for init_agent_pos
     def init_agent_pos(self, value):
+        # Restricts the value & type of init_agent_pos
         if isinstance(value, list) == False:
             raise TypeError('List expected for Agent Position, but received {}.'.format(type(value)))
         if (value[0] > self.grid_y-1) or (value[1] > self.grid_x-1):
@@ -233,11 +243,14 @@ class SimpleGrid(gym.Env):
         self._init_agent_pos= value
 
     @property
+    # Getter method for init_goal_pos
     def init_goal_pos(self):
         return self._init_goal_pos
 
     @init_goal_pos.setter
+    # Setter method for init_goal_pos
     def init_goal_pos(self, value):
+        # Restricts the value & type of init_goal_pos
         if isinstance(value, list) == False:
             raise TypeError('List expected for Goal Position, but received {}.'.format(type(value)))
         if (value[0] > self.grid_y-1) or (value[1] > self.grid_x-1):
@@ -245,11 +258,14 @@ class SimpleGrid(gym.Env):
         self._init_goal_pos= value
 
     @property
+    # Getter method for reward_set
     def reward_set(self):
         return self._reward_set
 
     @reward_set.setter
+    # Setter method for reward_set
     def reward_set(self, value):
+        # Restricts the value & type of reward_set
         if isinstance(value, dict) == False:
             raise TypeError('Dictionary expected for Reward Set, but received {}.'.format(type(value)))
         for key, val in value.items():
@@ -260,11 +276,14 @@ class SimpleGrid(gym.Env):
         self._reward_set= value
 
     @property
+    # Getter method for max_timesteps
     def max_timesteps(self):
         return self._max_timesteps
 
     @max_timesteps.setter
+    # Setter method for max_timesteps
     def max_timesteps(self, value):
+        # Restricts the value & type of max_timesteps
         if isinstance(value, int) == False:
             raise TypeError('Int expected for maximum timesteps, but received {}.'.format(type(value)))
         if (value < 0):
