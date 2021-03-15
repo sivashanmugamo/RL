@@ -1,5 +1,12 @@
-from .agents.Q_Learning_Agent 
-from .environment.SimpleGrid import SimpleGrid
+'''
+Author: @sivashanmugamo
+GitHub [Home]: https://github.com/sivashanmugamo
+'''
+
+import numpy as np
+
+from RL.environment.SimpleGrid import SimpleGrid
+from RL.agents.Q_Learning_Agent import QLearningAgent
 
 env= SimpleGrid(
     agent_position= [0, 0], 

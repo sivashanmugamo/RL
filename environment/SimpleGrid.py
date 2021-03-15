@@ -2,6 +2,7 @@
 Creates a simple grid environment to the provided specifications (grid_x, grid_y values)
 
 Author: @sivashanmugamo
+GitHub [Home]: https://github.com/sivashanmugamo
 '''
 
 # Importing required libraries

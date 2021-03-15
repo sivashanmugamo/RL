@@ -2,12 +2,14 @@
 Creates a Q-learning agent
 
 Author: @sivashanmugamo
+GitHub [Home]: https://github.com/sivashanmugamo
 '''
 
-from Random_Agent import RandomAgent
-
+# Importing required libraries
 import random
 import numpy as np
+
+from RL.agents.Random_Agent import RandomAgent
 
 class QLearningAgent(RandomAgent):
 
@@ -65,7 +67,7 @@ class QLearningAgent(RandomAgent):
 
         return random_action if random.random() < self.epsilon else greedy_action
 
-    def train(self) -> None:
+    def train(self, verbose: bool= False) -> None:
         '''
         '''
 
@@ -119,7 +121,7 @@ class QLearningAgent(RandomAgent):
             raise TypeError('Float expected for the Discount Factor, but received {}.'.format(type(value)))
         if value < 0.0 or value > 1.0:
             raise ValueError('Discount Factor should be positive and within the range of 0.0 & 1.0')
-        self.__discount_factor= value
+        self._discount_factor= value
 
     @property
     def learning_rate(self):
